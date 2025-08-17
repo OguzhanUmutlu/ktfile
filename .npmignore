@@ -1,6 +1,7 @@
 .idea
 .ideas
 .vscode
+.github
 tests
 .npmignore
 .gitignore
