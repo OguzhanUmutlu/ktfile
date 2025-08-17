@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "outDir": "dist/ts",
+    "declaration": true,
+    "declarationDir": "types",
+    "experimentalDecorators": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
