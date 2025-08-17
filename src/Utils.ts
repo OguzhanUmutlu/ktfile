@@ -1,4 +1,3 @@
-import {FileAsync} from "./async/FileAsync";
 import {FileSync} from "./sync/FileSync";
 
 let cwd: string[] = [];
@@ -7,11 +6,11 @@ if (typeof process !== "undefined" && "cwd" in process && typeof process.cwd ===
 }
 
 export function splitPath(path: string, cd = cwd): string[] {
-    if (path.startsWith("/")) {
+    if (path[0] === "/" || path[0] === "\\") {
         cd = [];
         path = path.slice(1);
     } else cd = [...cd];
-    const parts = path.split("/");
+    const parts = path.split(/[\\/]/g);
     for (const part of parts) {
         if (part === "..") {
             cd.pop();

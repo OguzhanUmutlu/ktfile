@@ -22,6 +22,7 @@ export function ret<T>(x: () => T): T | null {
 
 export class FileSync extends IFile<ISyncFS> {
     static fs: ISyncFS;
+    static sep = "/";
 
     static createTempFile(directory: FileSync, prefix: string = "ktfile-temp", suffix: string = ".tmp"): FileSync {
         if (!("mkdTempSync" in FileSync.fs)) {
@@ -308,7 +309,7 @@ export class FileSync extends IFile<ISyncFS> {
      * @returns {string} The path separator used by the file system.
      */
     get separator(): string {
-        return "sep" in this.fs && typeof this.fs.sep === "string" ? this.fs.sep : "/";
+        return FileSync.sep;
     };
 
     /**
@@ -742,7 +743,7 @@ export class FileSync extends IFile<ISyncFS> {
      * or as a Buffer if encoding is not specified.
      * If reading fails, it will return null.
      */
-    read(encoding?: BufferEncoding): string | null;
+    read(encoding: BufferEncoding): string | null;
     /**
      * @description Reads the contents of the file as a Buffer.
      * If the file is a binary file, it will return the contents as a Buffer.
