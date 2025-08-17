@@ -20,6 +20,7 @@ export function fileAsync(path: string) {
 if (typeof process !== "undefined") {
     try {
         initFS(await import("fs"));
+        FileSync.sep = FileAsync.sep = process.platform === "win32" ? "\\" : "/";
     } catch {
     }
 }

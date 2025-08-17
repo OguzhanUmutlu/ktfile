@@ -21,6 +21,7 @@ export async function ret<T>(x: () => Promise<T>): Promise<T | null> {
 
 export class FileAsync extends IFile<IAsyncFS> {
     static fs: IAsyncFS;
+    static sep = "/";
 
     static createTempFile(directory: FileAsync, prefix: string = "ktfile-temp", suffix: string = ".tmp"): FileAsync {
         if (!("mkdTemp" in FileAsync.fs)) {
@@ -314,7 +315,7 @@ export class FileAsync extends IFile<IAsyncFS> {
      * @returns {string} The path separator used by the file system.
      */
     get separator(): string {
-        return "sep" in this.fs && typeof this.fs.sep === "string" ? this.fs.sep : "/";
+        return FileAsync.sep;
     };
 
     /**
@@ -748,7 +749,7 @@ export class FileAsync extends IFile<IAsyncFS> {
      * or as a Buffer if encoding is not specified.
      * If reading fails, it will return null.
      */
-    read(encoding?: BufferEncoding): Promise<string | null>;
+    read(encoding: BufferEncoding): Promise<string | null>;
     /**
      * @description Reads the contents of the file as a Buffer.
      * If the file is a binary file, it will return the contents as a Buffer.
