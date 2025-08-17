@@ -1,6 +1,6 @@
 {
   "name": "ktfile",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Fluent, modern and chainable File API\n\n",
   "main": "index.min.js",
   "types": "types/ktfile.d.ts",

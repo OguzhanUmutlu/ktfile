@@ -1,4 +1,5 @@
 .idea
+.ideas
 .vscode
 tests
 .npmignore
