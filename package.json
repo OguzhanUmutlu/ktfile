@@ -1,0 +1,44 @@
+{
+  "name": "ktfile",
+  "version": "0.0.2",
+  "description": "Fluent, modern and chainable File API\n\n",
+  "main": "index.min.js",
+  "types": "types/ktfile.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "tsx tests/test.ts",
+    "build": "tsc && rollup -c",
+    "clean": "node tests/clean.js",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@types/node": "^22.9.0",
+    "rollup": "^4.22.4"
+  },
+  "keywords": [
+    "file",
+    "file api",
+    "file system",
+    "fs",
+    "nodejs",
+    "typescript",
+    "javascript",
+    "modern",
+    "fluent",
+    "chainable",
+    "async",
+    "await",
+    "promise"
+  ],
+  "author": "OguzhanUmutlu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OguzhanUmutlu/ktfile.git"
+  }
+}
