@@ -470,11 +470,13 @@ export class FileSync extends IFile<ISyncFS> {
      * } else {
      *     console.log("Failed to create file.");
      * }
+     * @param {string | Buffer} [value=""] - The initial content to write to the file.
+     * @param {BufferEncoding} [encoding] - The encoding to use when writing the content.
      * @returns {FileSync | null} The FileSync object if the file was created successfully or already exists,
      * or null if the file could not be created.
      */
-    createFile(): FileSync | null {
-        if (!this.exists) return this.write("") ? this : null;
+    createFile(value: string | Buffer = "", encoding?: BufferEncoding): FileSync | null {
+        if (!this.exists) return this.write(value, encoding) ? this : null;
         return this.isFile ? this : null;
     };
 

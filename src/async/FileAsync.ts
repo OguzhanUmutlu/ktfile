@@ -476,11 +476,13 @@ export class FileAsync extends IFile<IAsyncFS> {
      * } else {
      *     console.log("Failed to create file.");
      * }
+     * @param {string | Buffer} [value=""] - The initial content to write to the file.
+     * @param {BufferEncoding} [encoding] - The encoding to use when writing the content.
      * @returns {Promise<FileAsync | null>} The FileAsync object if the file was created successfully or already exists,
      * or null if the file could not be created.
      */
-    async createFile(): Promise<FileAsync | null> {
-        if (!await this.exists()) return await this.write("") ? this : null;
+    async createFile(value: string | Buffer = "", encoding?: BufferEncoding): Promise<FileAsync | null> {
+        if (!await this.exists()) return await this.write(value, encoding) ? this : null;
         return await this.isFile() ? this : null;
     };
 
