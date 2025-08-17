@@ -190,14 +190,15 @@ export class FileSync extends IFile<ISyncFS> {
     };
 
     /**
-     * @description Gets the last access time of the file.
-     * The last access time is the time when the file was last accessed in the file system.
-     * If the file does not exist, it returns null.
+     * @description Checks if the file exists.
      * @example
      * const file = new FileSync("path/to/file.txt");
-     * console.log("Last access time:", file.lastAccess);
-     * // Output: Last access time: 2023-10-01T12:00:00.000Z
-     * @returns {Date | null} The last access time of the file as a Date object, or null if the file does not exist.
+     * if (file.exists) {
+     *    console.log("File exists.");
+     * } else {
+     *    console.log("File does not exist.");
+     * }
+     * @returns {boolean | null} True if the file exists, false if it does not, or null if the file system cannot be accessed.
      */
     get exists(): boolean | null {
         return ret(() => this.fs.existsSync(this.fullPath));
