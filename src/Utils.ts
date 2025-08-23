@@ -9,6 +9,9 @@ export function splitPath(path: string, cd = cwd): string[] {
     if (path[0] === "/" || path[0] === "\\") {
         cd = [];
         path = path.slice(1);
+    } else if (/^[a-zA-Z]:\\/.test(path)) {
+        cd = [path.slice(0, 2)];
+        path = path.slice(3);
     } else cd = [...cd];
     const parts = path.split(/[\\/]/g);
     for (const part of parts) {
