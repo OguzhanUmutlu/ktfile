@@ -202,7 +202,7 @@ export class FileSync extends IFile<ISyncFS> {
      * @returns {boolean | null} True if the file exists, false if it does not, or null if the file system cannot be accessed.
      */
     get exists(): boolean | null {
-        return ret(() => this.fs.existsSync(this.fullPath));
+        return ret(() => this.fs.existsSync(this.fullPath)) ?? pass(() => this.fs.accessSync(this.fullPath));
     };
 
     /**
