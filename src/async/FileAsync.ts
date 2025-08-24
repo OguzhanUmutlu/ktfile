@@ -208,7 +208,7 @@ export class FileAsync extends IFile<IAsyncFS> {
      * @returns {Promise<boolean | null>} True if the file exists, false if it does not exist, or null if an error occurs.
      */
     exists(): Promise<boolean | null> {
-        return ret(() => this.fs.exists(this.fullPath));
+        return ret(() => this.fs.exists(this.fullPath)) ?? pass(() => this.fs.access(this.fullPath));
     };
 
     /**
