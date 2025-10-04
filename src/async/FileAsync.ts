@@ -2,6 +2,7 @@ import {IFile} from "../IFile";
 import {IAsyncFS} from "./IAsyncFS";
 import {attachCleanup, deleteQueue} from "../Utils";
 import {FileSync} from "../sync/FileSync";
+import {ConfigAsync} from "./ConfigAsync";
 
 export async function pass(x: () => Promise<unknown>): Promise<boolean> {
     try {
@@ -411,8 +412,8 @@ export class FileAsync extends IFile<IAsyncFS> {
      * This is calculated by dividing the size in bytes by 1024 * 1024.
      * If the file does not exist, it returns null.
      * @example
-     * const file = new FileSync("path/to/file.txt");
-     * console.log("File size:", file.sizeMB, "MB");
+     * const file = new FileAsync("path/to/file.txt");
+     * console.log("File size:", await file.sizeMB(), "MB");
      * @returns {Promise<number | null>} The size of the file in megabytes (MB), or null if the file does not exist.
      */
     async sizeMB(): Promise<number | null> {
@@ -425,8 +426,8 @@ export class FileAsync extends IFile<IAsyncFS> {
      * This is calculated by dividing the size in bytes by 1024 * 1024 * 1024.
      * If the file does not exist, it returns null.
      * @example
-     * const file = new FileSync("path/to/file.txt");
-     * console.log("File size:", file.sizeGB, "GB");
+     * const file = new FileAsync("path/to/file.txt");
+     * console.log("File size:", await file.sizeGB(), "GB");
      * @returns {Promise<number | null>} The size of the file in gigabytes (GB), or null if the file does not exist.
      */
     async sizeGB(): Promise<number | null> {
@@ -894,10 +895,11 @@ export class FileAsync extends IFile<IAsyncFS> {
      *     console.log("Failed to write JSON data.");
      * }
      * @param {unknown} data - The JSON data to write to the file.
+     * @param {number} spaces - The number of spaces to use for indentation in the JSON file.
      * @returns {boolean} True if the JSON data was written successfully, false otherwise.
      */
-    async writeJSON(data: unknown): Promise<FileAsync | null> {
-        return await pass(() => this.write(JSON.stringify(data, null, 2))) ? this : null;
+    async writeJSON(data: unknown, spaces: number = 2): Promise<FileAsync | null> {
+        return await pass(() => this.write(JSON.stringify(data, null, spaces))) ? this : null;
     };
 
     /**
@@ -923,5 +925,9 @@ export class FileAsync extends IFile<IAsyncFS> {
 
     get sync() {
         return new FileSync(this.split);
+    };
+
+    async configJSON() {
+        return await new ConfigAsync(this).init();
     };
 }

@@ -2,6 +2,7 @@ import {attachCleanup, deleteQueue} from "../Utils";
 import {IFile} from "../IFile";
 import {FileAsync} from "../async/FileAsync";
 import {ISyncFS} from "./ISyncFS";
+import {ConfigSync} from "./ConfigSync";
 
 export function pass(x: () => unknown): boolean {
     try {
@@ -888,10 +889,11 @@ export class FileSync extends IFile<ISyncFS> {
      *     console.log("Failed to write JSON data.");
      * }
      * @param {unknown} data - The JSON data to write to the file.
+     * @param {number} spaces - The number of spaces to use for indentation in the JSON file.
      * @returns {boolean} True if the JSON data was written successfully, false otherwise.
      */
-    writeJSON(data: unknown): FileSync | null {
-        return pass(() => this.write(JSON.stringify(data, null, 2))) ? this : null;
+    writeJSON(data: unknown, spaces: number = 2): FileSync | null {
+        return pass(() => this.write(JSON.stringify(data, null, spaces))) ? this : null;
     };
 
     /**
@@ -917,5 +919,9 @@ export class FileSync extends IFile<ISyncFS> {
 
     get async() {
         return new FileAsync(this.split);
+    };
+
+    get configJSON() {
+        return new ConfigSync(this);
     };
 }
