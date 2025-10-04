@@ -2,12 +2,12 @@ export abstract class Config {
     protected constructor(protected value: unknown) {
     };
 
-    get<T>(path: string): T {
+    get<T>(path: string, default_: T = undefined): T {
         const parts = path.split(".");
         let current: any = this.value;
         for (const part of parts) {
             if (current[part] === undefined) {
-                return undefined as any;
+                return default_;
             }
             current = current[part];
         }
