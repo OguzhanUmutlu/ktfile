@@ -72,3 +72,10 @@ export function attachCleanup() {
         window.addEventListener("pagehide", cleanup);
     }
 }
+
+export function getPathType(path: string) {
+    if (path.includes("/") || path.includes("\\")) {
+        return path[0] === "." && (path[1] === "/" || path[1] === "\\") ? "relative" : "absolute";
+    }
+    return "name";
+}
