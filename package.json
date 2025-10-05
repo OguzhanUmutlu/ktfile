@@ -1,6 +1,6 @@
 {
   "name": "ktfile",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A powerful, cross-platform file system library for JavaScript/TypeScript that provides both synchronous and asynchronous APIs with a clean, object-oriented interface.",
   "main": "index.min.js",
   "types": "types/ktfile.d.ts",
