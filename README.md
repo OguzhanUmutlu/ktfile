@@ -73,6 +73,7 @@ initFS(fs);
 - `separator: string` - Path separator for the platform
 - `isDirectory: boolean | null` - Whether this is a directory
 - `isFile: boolean | null` - Whether this is a regular file
+- `isEmpty`: boolean | null` - Whether the file or directory is empty
 - `isHidden: boolean` - Whether the file is hidden
 - `isSymbolicLink: boolean | null` - Whether this is a symbolic link
 - `size: number | null` - File size in bytes
@@ -218,6 +219,7 @@ await file.setLastModified(new Date());
 const exists = await file.exists();
 const isDir = await file.isDirectory();
 const isFile = await file.isFile();
+const isEmpty = await file.isEmpty();
 const isLink = await file.isSymbolicLink();
 
 // File sizes

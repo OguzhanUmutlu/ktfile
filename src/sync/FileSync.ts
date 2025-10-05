@@ -346,6 +346,25 @@ export class FileSync extends IFile<ISyncFS> {
     };
 
     /**
+     * @description Checks if the file is empty.
+     * A file is considered empty if it is a directory with no files or if it is a regular file with a size of 0 bytes.
+     * If the file does not exist, it returns null.
+     * @example
+     * const file = new FileAsync("path/to/file.txt");
+     * if (await file.isEmpty()) {
+     *    console.log("This file is empty.");
+     * } else {
+     *    console.log("This file is not empty.");
+     * }
+     * @returns {Promise<boolean | null>} True if the file is empty, false if it is not, or null if the file does not exist.
+     */
+    get isEmpty(): boolean | null {
+        const isDir = this.isDirectory;
+        if (isDir === null) return null;
+        return isDir ? (this.listFiles()?.length ?? 0) === 0 : this.size === 0
+    };
+
+    /**
      * @description Checks if the file is hidden.
      * A file is considered hidden if its name starts with a dot (.) or if any part of its path starts with a dot.
      * @example
