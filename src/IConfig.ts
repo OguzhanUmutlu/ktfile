@@ -4,7 +4,7 @@ export abstract class Config {
 
     get<T>(path: string, default_: T = undefined): T {
         const parts = path.split(".");
-        let current: any = this.value;
+        let current: unknown = this.value;
         for (const part of parts) {
             if (current[part] === undefined) {
                 return default_;
@@ -14,9 +14,9 @@ export abstract class Config {
         return current as T;
     };
 
-    set(path: string, value: any) {
+    set(path: string, value: unknown) {
         const parts = path.split(".");
-        let current: any = this.value;
+        let current: unknown = this.value;
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i];
             if (i === parts.length - 1) {

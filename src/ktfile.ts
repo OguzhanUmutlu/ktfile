@@ -3,6 +3,7 @@ import {FileAsync} from "./async/FileAsync";
 
 export {FileAsync} from "./async/FileAsync";
 export {FileSync, FileSync as File} from "./sync/FileSync";
+export * from "./Utils";
 
 export function initFS(fs: typeof import("fs")) {
     FileSync.fs = fs;
