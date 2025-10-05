@@ -1,4 +1,5 @@
 import {splitPath} from "./Utils";
+import type {WriteStream} from "node:fs";
 
 export abstract class IFile<FS extends object> {
     protected readonly split: string[];
@@ -122,4 +123,38 @@ export abstract class IFile<FS extends object> {
         }
         throw new Error("File system does not support createInputStream");
     };
+
+    download(
+        https: typeof import("http") | typeof import("https"),
+        url: string,
+        options?: {
+            headers?: Record<string, string>,
+            method?: "GET" | "POST" | "PUT" | "DELETE",
+            body?: any
+        },
+        update?: (received: number, total: number) => void
+    ): Promise<Error | null> {
+        const stream = <WriteStream><unknown>this.createWriteStream();
+
+        return new Promise(r => https.get(url, res => {
+            if (res.statusCode !== 200) return r(new Error(`Request Failed. Status Code: ${res.statusCode}`));
+
+            const totalBytes = parseInt(res.headers["content-length"] || "0", 10);
+
+            if (update) update(0, totalBytes);
+
+            let receivedBytes = 0;
+            res.on("data", chunk => {
+                receivedBytes += chunk.length;
+                if (update) update(receivedBytes, totalBytes);
+            });
+
+            res.on("end", () => {
+                stream.close();
+                r(null);
+            });
+
+            res.pipe(stream);
+        }).on("error", r));
+    }
 }
