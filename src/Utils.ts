@@ -79,3 +79,7 @@ export function getPathType(path: string) {
     }
     return "name";
 }
+
+export function isValidFilename(name: string) {
+    return !/[<>:"/\\|?*\x00-\x1F]/.test(name) && !/^\.\.?$/.test(name) && name.length <= 255;
+}
