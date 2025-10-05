@@ -81,5 +81,10 @@ export function getPathType(path: string) {
 }
 
 export function isValidFilename(name: string) {
-    return !/[<>:"/\\|?*\x00-\x1F]/.test(name) && !/^\.\.?$/.test(name) && name.length <= 255;
+    return !/[<>:"/\\|?*\x00-\x1F]/.test(name) && name.length > 0 && name.length <= 255;
+}
+
+export function isValidPath(path: string) {
+    const parts = splitPath(path, []);
+    return parts.every(isValidFilename);
 }
