@@ -137,7 +137,10 @@ export abstract class IFile<FS extends object> {
         const stream = <WriteStream><unknown>this.createWriteStream();
 
         return new Promise(r => https.get(url, res => {
-            if (res.statusCode !== 200) return r(new Error(`Request Failed. Status Code: ${res.statusCode}`));
+            if (res.statusCode !== 200) {
+                stream.close();
+                return r(new Error(`Request Failed. Status Code: ${res.statusCode}`));
+            }
 
             const totalBytes = parseInt(res.headers["content-length"] || "0", 10);
 
