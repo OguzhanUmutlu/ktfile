@@ -124,21 +124,25 @@ export abstract class IFile<FS extends object> {
         throw new Error("File system does not support createInputStream");
     };
 
-    download(
-        https: typeof import("http") | typeof import("https"),
+    async download(
         url: string,
         options?: {
             headers?: Record<string, string>,
             method?: "GET" | "POST" | "PUT" | "DELETE",
             body?: any
         },
+        https?: typeof import("http") | typeof import("https"),
         update?: (received: number, total: number) => void
     ): Promise<Error | null> {
         const stream = <WriteStream><unknown>this.createWriteStream();
 
-        return new Promise(r => https.get(url, res => {
+        const v = url.startsWith("https://") ? "https" : "http";
+        if (!https) https = await import(v);
+
+        return await new Promise(r => https.get(url, res => {
             if (res.statusCode !== 200) {
                 stream.close();
+                res.resume();
                 return r(new Error(`Request Failed. Status Code: ${res.statusCode}`));
             }
 
