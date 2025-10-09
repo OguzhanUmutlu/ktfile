@@ -131,37 +131,43 @@ export abstract class IFile<FS extends object> {
             method?: "GET" | "POST" | "PUT" | "DELETE",
             body?: any
         },
-        update?: (received: number, total: number) => void,
-        https?: typeof import("http") | typeof import("https")
+        update?: (received: number, total: number) => void
     ): Promise<Error | null> {
-        const stream = <WriteStream><unknown>this.createWriteStream();
+        const stream = this.createWriteStream();
 
-        const v = url.startsWith("https://") ? "https" : "http";
-        if (!https) https = await import(v);
+        try {
+            const res = await fetch(url, {
+                method: options?.method || "GET",
+                headers: options?.headers,
+                body: options?.body
+            });
 
-        return await new Promise(r => https.get(url, res => {
-            if (res.statusCode !== 200) {
-                stream.close();
-                res.resume();
-                return r(new Error(`Request Failed. Status Code: ${res.statusCode}`));
+            if (!res.ok) {
+                await stream.close();
+                return new Error(`Request Failed. Status Code: ${res.status}`);
             }
 
-            const totalBytes = parseInt(res.headers["content-length"] || "0", 10);
-
+            const totalBytes = parseInt(res.headers.get("content-length") || "0", 10);
             if (update) update(0, totalBytes);
 
             let receivedBytes = 0;
-            res.on("data", chunk => {
+
+            if (!res.body) {
+                await stream.close();
+                return new Error("No response body");
+            }
+
+            for await (const chunk of res.body) {
+                (<WriteStream><unknown>stream).write(chunk);
                 receivedBytes += chunk.length;
                 if (update) update(receivedBytes, totalBytes);
-            });
+            }
 
-            res.on("end", () => {
-                stream.close();
-                r(null);
-            });
-
-            res.pipe(stream);
-        }).on("error", r));
-    }
+            await stream.close();
+            return null;
+        } catch (err: any) {
+            await stream.close();
+            return err instanceof Error ? err : new Error(String(err));
+        }
+    };
 }
