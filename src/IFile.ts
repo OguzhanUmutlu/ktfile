@@ -131,8 +131,8 @@ export abstract class IFile<FS extends object> {
             method?: "GET" | "POST" | "PUT" | "DELETE",
             body?: any
         },
-        https?: typeof import("http") | typeof import("https"),
-        update?: (received: number, total: number) => void
+        update?: (received: number, total: number) => void,
+        https?: typeof import("http") | typeof import("https")
     ): Promise<Error | null> {
         const stream = <WriteStream><unknown>this.createWriteStream();
 
