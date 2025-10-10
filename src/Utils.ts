@@ -90,7 +90,7 @@ export function isValidPath(path: string) {
 }
 
 export function getSizeFormat(bytes: number) {
-    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024) return [bytes, "B"];
     const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let i = -1;
     do {
@@ -98,4 +98,8 @@ export function getSizeFormat(bytes: number) {
         i++;
     } while (bytes >= 1024 && i < units.length - 1);
     return [bytes, units[i]];
+}
+
+export function formatSize(bytes: number) {
+    return getSizeFormat(bytes).join(" ");
 }
