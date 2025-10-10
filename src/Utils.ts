@@ -89,7 +89,7 @@ export function isValidPath(path: string) {
     return parts.every(i => /^\.\.?$/.test(i) || isValidFilename(i));
 }
 
-export function getSizeFormat(bytes: number) {
+export function getSizeFormat(bytes: number): [number, string] {
     if (bytes < 1024) return [bytes, "B"];
     const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let i = -1;
@@ -100,6 +100,7 @@ export function getSizeFormat(bytes: number) {
     return [bytes, units[i]];
 }
 
-export function formatSize(bytes: number) {
-    return getSizeFormat(bytes).join(" ");
+export function formatSize(bytes: number, decimals = 2) {
+    const [size, unit] = getSizeFormat(bytes);
+    return size.toFixed(decimals) + " " + unit;
 }
