@@ -88,3 +88,14 @@ export function isValidPath(path: string) {
     const parts = splitPath(path, []);
     return parts.every(i => /^\.\.?$/.test(i) || isValidFilename(i));
 }
+
+export function getSizeFormat(bytes: number) {
+    if (bytes < 1024) return bytes + " B";
+    const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    let i = -1;
+    do {
+        bytes /= 1024;
+        i++;
+    } while (bytes >= 1024 && i < units.length - 1);
+    return [bytes, units[i]];
+}
