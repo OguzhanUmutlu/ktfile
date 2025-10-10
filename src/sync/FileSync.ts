@@ -397,13 +397,18 @@ export class FileSync extends IFile<ISyncFS> {
 
     /**
      * @description Gets the size of the file in bytes.
+     * If the file is a directory, it returns the total size of all files within the directory.
      * @example
      * const file = new FileSync("path/to/file.txt");
      * console.log("File size:", file.size, "bytes");
      * @returns {number} The size of the file in bytes, or null if the file does not exist.
      */
     get size(): number | null {
-        return ret(() => this.fs.statSync(this.fullPath).size);
+        return ret(() => {
+            const stat = this.fs.statSync(this.fullPath);
+            if (!stat.isFile()) return this.listFiles().reduce((acc, file) => acc + (file.size ?? 0), 0);
+            return stat.size;
+        });
     };
 
     /**

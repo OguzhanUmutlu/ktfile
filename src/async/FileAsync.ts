@@ -403,13 +403,29 @@ export class FileAsync extends IFile<IAsyncFS> {
 
     /**
      * @description Gets the size of the file in bytes.
+     * If the file is a directory, it returns the total size of all files within the directory.
      * @example
      * const file = new FileAsync("path/to/file.txt");
      * console.log("File size:", await file.size(), "bytes");
      * @returns {Promise<number | null>} The size of the file in bytes, or null if the file does not exist.
      */
-    size(): Promise<number | null> {
-        return ret(() => this.fs.stat(this.fullPath).then(r => r.size).catch(() => null));
+    async size(): Promise<number | null> {
+        return ret(async () => {
+            const stat = await this.fs.stat(this.fullPath).then(r => r).catch(() => null);
+            if (!stat) return null;
+            if (stat.isFile()) return stat.size;
+            if (stat.isDirectory()) {
+                const files = await this.listFiles();
+                if (files === null) return null;
+                let totalSize = 0;
+                for (const file of files) {
+                    const fileSize = await file.size();
+                    if (fileSize === null) continue;
+                    totalSize += fileSize;
+                }
+                return totalSize;
+            }
+        });
     };
 
     /**
