@@ -11,3 +11,4 @@ tsconfig.json
 rollup.config.mjs
 dist
 src
+folder
