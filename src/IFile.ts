@@ -1,5 +1,6 @@
 import {splitPath} from "./Utils";
 import type {WriteStream} from "node:fs";
+import {isLinux} from "./ktfile";
 
 export abstract class IFile<FS extends object> {
     protected readonly split: string[];
@@ -12,8 +13,7 @@ export abstract class IFile<FS extends object> {
     abstract get separator(): string;
 
     get fullPath(): string {
-        if (this.split.length === 0) return this.separator;
-        return this.split.join(this.separator);
+        return (isLinux ? this.separator : "") + this.split.join(this.separator);
     };
 
     /**

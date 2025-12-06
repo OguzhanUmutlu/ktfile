@@ -18,10 +18,13 @@ export function fileAsync(path: string) {
     return new FileAsync(path);
 }
 
+export let isLinux = true;
+
 if (typeof process !== "undefined") {
     try {
         initFS(await import("fs"));
-        FileSync.sep = FileAsync.sep = process.platform === "win32" ? "\\" : "/";
+        isLinux = process.platform !== "win32";
+        FileSync.sep = FileAsync.sep = isLinux ? "/" : "\\";
     } catch {
     }
 }
