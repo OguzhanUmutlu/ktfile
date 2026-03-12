@@ -540,10 +540,10 @@ export class FileAsync extends IFile<IAsyncFS> {
      */
     async delete(recursive?: boolean, force: boolean = recursive): Promise<FileAsync | null> {
         if (recursive) {
-            if ("rmSync" in this.fs) {
+            if ("rm" in this.fs) {
                 return await pass(() => this.fs.rm(this.fullPath, {recursive: true, force: force})) ? this : null;
             }
-            if ("rmdirSync" in this.fs) {
+            if ("rmdir" in this.fs) {
                 return await pass(() => this.fs.rmdir(this.fullPath, {recursive: true})) ? this : null;
             }
             let failed = false;
