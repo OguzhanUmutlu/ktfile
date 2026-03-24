@@ -3,7 +3,7 @@ import type {WriteStream} from "node:fs";
 import {isLinux} from "./ktfile";
 
 export abstract class IFile<FS extends object> {
-    protected readonly split: string[];
+    readonly split: string[];
     constructor(pt: string | string[]) {
         this.split = typeof pt === "string" ? splitPath(pt) : [...pt];
     };
